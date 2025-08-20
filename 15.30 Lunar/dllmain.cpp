@@ -1,0 +1,49 @@
+// dllmain.cpp : Defines the entry point for the DLL application.
+#include "framework.h"
+#include "Server/Public/GameMode.h"
+#include "Server/Public/NetDriver.h"
+#include "Server/Public/Player.h"
+#include "Server/Public/Abilities.h"
+#include "Server/Public/Looting.h"
+#include "Server/Public/xp.h"
+DWORD WINAPI Main(LPVOID) {
+    AllocConsole();
+    FILE* File = nullptr;
+    freopen_s(&File, "CONOUT$", "w+", stdout);
+    MH_Initialize();
+    SetConsoleTitleA("Lunar 15.30 | Waiting");
+    Sleep(3000);
+
+    *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CC) = false;
+    *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CD) = true;
+
+    MiscChecks();
+    NetDriver::NetDriverHooks();
+    GameMode::GameModeHooks();
+    Player::PlayerHooks();
+    Abilities::Hooking();
+    LootingHooks();
+    XP_Challanges::InitXPHooks();
+
+   Globals::SpectatingName = UKismetStringLibrary::Conv_StringToName(TEXT("Spectating"));
+    UKismetSystemLibrary::GetDefaultObj()->ExecuteConsoleCommand(UWorld::GetWorld(), L"open Apollo_Terrain", nullptr);
+    UWorld::GetWorld()->OwningGameInstance->LocalPlayers.Remove(0);
+
+    MH_EnableHook(MH_ALL_HOOKS);
+
+    return 0;
+}
+
+BOOL APIENTRY DllMain(HMODULE hModule, const DWORD ulReasonForCall
+)
+{
+    switch (ulReasonForCall)
+    {
+    case DLL_PROCESS_ATTACH:
+        CreateThread(nullptr, 0, Main, nullptr, 0, nullptr);
+        break;
+    default:
+        break;
+    }
+    return TRUE;
+}
