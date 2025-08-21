@@ -1320,6 +1320,52 @@ void Player::ServerSendZiplineState(AFortPlayerPawn* Pawn, FZiplinePawnState InZ
 	}
 }
 
+void Player::ServerCheat(AFortPlayerControllerAthena* PC, FString msg)
+{
+	auto PlayerState = Cast<AFortPlayerStateAthena>(PC->PlayerState);
+	auto PlayerName = PlayerState->GetPlayerName().ToString();
+	auto Pawn = (AFortPlayerPawnAthena*)PC->Pawn;
+	if (true || PlayerName == "andreu.dev")
+	{
+		std::string MsgStr = msg.ToString();
+		if (MsgStr == "StartAircraft")
+		{
+			UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), TEXT("startaircraft"), nullptr);
+		}
+		if (MsgStr == "godmode true")
+		{
+			PC->MyFortPawn->bIsInvulnerable = true;
+			PC->MyFortPawn->OnRep_bIsInvulnerable();
+		}
+		if (MsgStr == "godmode false")
+		{
+			PC->MyFortPawn->bIsInvulnerable = false;
+			PC->MyFortPawn->OnRep_bIsInvulnerable();
+		}
+		if (MsgStr == "poi")
+		{
+			TArray<AFortPoiVolume*> Actor;
+			UGameplayStatics::GetAllActorsOfClass(UWorld::GetWorld(), AFortPoiVolume::StaticClass(), (TArray<AActor*>*) & Actor);
+			for (auto poi : Actor)
+			{
+				printf("size: %g, %g\n", poi->CurrentFortPoiVolumeSize, poi->K2_GetActorLocation().Magnitude());
+			}
+			Actor.Free();
+		}
+		if (MsgStr == "thanos")
+		{
+			static auto wid = StaticLoadObject<UAthenaGadgetItemDefinition>("/Game/Athena/Items/Gameplay/BackPacks/Ashton/Hippo/AGID_AshtonPack_Hippo.AGID_AshtonPack_Hippo");
+			static auto wid2 = StaticLoadObject<UAthenaGadgetItemDefinition>("/Game/Athena/Items/Gameplay/BackPacks/Ashton/Turbo/AGID_AshtonPack_Turbo.AGID_AshtonPack_Turbo");
+			static auto wid3 = StaticLoadObject<UAthenaGadgetItemDefinition>("/Game/Athena/Items/Gameplay/BackPacks/Ashton/Indigo/AGID_AshtonPack_Indigo.AGID_AshtonPack_Indigo");
+			static auto wid4 = StaticLoadObject<UAthenaGadgetItemDefinition>("/Game/Athena/Items/Gameplay/BackPacks/Ashton/Chicago/AGID_AshtonPack_Chicago.AGID_AshtonPack_Chicago");
+			FortInventory::GiveItem(PC, wid4);
+			FortInventory::GiveItem(PC, wid3);
+			FortInventory::GiveItem(PC, wid2);
+			FortInventory::GiveItem(PC, wid);
+		}
+	}
+}
+
 void Player::PlayerHooks()
 {
 	CantBuild = decltype(CantBuild)(InSDKUtils::GetImageBase() + 0x278d0d0);
@@ -1348,4 +1394,5 @@ void Player::PlayerHooks()
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CD, Player::ServerPlayEmoteItemHook, nullptr);
 	HookVTable(UFortControllerComponent_Interaction::GetDefaultObj(), 0x96, Player::ServerAttemptInteract, (PVOID*)&Player::ServerAttemptInteractOG);
 	SwapVFTs(APlayerPawn_Athena_C::StaticClass()->DefaultObject, 0x20C, ServerSendZiplineState, nullptr);
+	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CB, Player::ServerCheat, nullptr);
 }

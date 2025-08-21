@@ -33,5 +33,6 @@ namespace Player
 	inline void(*OrginalServerSetInAircraft)(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
 	void ServerSetInAircraft(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
 	 void ServerSendZiplineState(AFortPlayerPawn* Pawn, FZiplinePawnState InZiplineState);
+	 void ServerCheat(AFortPlayerControllerAthena* PC, FString msg);
 	void PlayerHooks();
 }
