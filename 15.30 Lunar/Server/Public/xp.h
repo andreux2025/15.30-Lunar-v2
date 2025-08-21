@@ -1,18 +1,49 @@
+
 #pragma once
 #include "../../framework.h"
 
-namespace XP
+class XP_Accolades
 {
-	namespace Accolades
-	{
-		void GiveAccolade(AFortPlayerControllerAthena* PC, UFortAccoladeItemDefinition* AccoladeDef, UFortQuestItemDefinition* QuestDef, EXPEventPriorityType Priority = EXPEventPriorityType::XPBarOnly);
-	}
+public:
+    static void GiveAccolade(
+        AFortPlayerControllerAthena* PC,
+        UFortAccoladeItemDefinition* AccoladeDef,
+        UFortQuestItemDefinition* QuestDef,
+        EXPEventPriorityType Priority = EXPEventPriorityType::XPBarOnly
+    );
+};
 
-	namespace Challanges
-	{
-		void UpdateChallange(UFortQuestManager* QuestManager, UFortQuestItemDefinition* QuestItem, FName BackendName, int Count);
-		void SendComplexCustomStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count);
-		void SendStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count, EFortQuestObjectiveStatEvent StatEvent);
-		bool SendDistanceUpdate(UGameplayAbility* Ability);
-	}
-}
+class XP_Challanges
+{
+public:
+    static void UpdateChallange(
+        UFortQuestManager* QuestManager,
+        UFortQuestItemDefinition* QuestItem,
+        FName BackendName,
+        int Count
+    );
+
+    static void SendComplexCustomStatEvent(
+        UFortQuestManager* ManagerComp,
+        UObject* TargetObject,
+        FGameplayTagContainer& AdditionalSourceTags,
+        FGameplayTagContainer& TargetTags,
+        bool* QuestActive,
+        bool* QuestCompleted,
+        int32 Count
+    );
+
+    static void SendStatEvent(
+        UFortQuestManager* ManagerComp,
+        UObject* TargetObject,
+        FGameplayTagContainer& AdditionalSourceTags,
+        FGameplayTagContainer& TargetTags,
+        bool* QuestActive,
+        bool* QuestCompleted,
+        int32 Count,
+        EFortQuestObjectiveStatEvent StatEvent
+    );
+
+    static bool SendDistanceUpdate(UGameplayAbility* Ability);
+    static void InitXPHooks();
+};

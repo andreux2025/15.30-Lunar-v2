@@ -9,6 +9,7 @@ namespace Player
 	void ServerAttemptAircraftJumpHook(const UFortControllerComponent_Aircraft* ControllerComponent, const FRotator& ClientRotation);
 	void ServerSetInAircraft(AFortPlayerState* PlayerState, bool bNewInAircraft);
 	inline void (*ServerSetInAircraftOG)(AFortPlayerState*, bool);
+	void ServerPlayEmoteItemHook(AFortPlayerController* PlayerController, UFortItemDefinition* EmoteAsset, float RandomEmoteNumber);
 	void ServerExecuteInventoryItem(AFortPlayerController* PC, FGuid Guid);
 	void GetPlayerViewPoint(APlayerController* PlayerController, FVector& outLocation, FRotator& outRotation);
 	inline void (*GetPlayerViewPointOG)(APlayerController* PlayerController, FVector outLocation, FRotator outRotation);

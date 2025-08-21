@@ -1340,9 +1340,9 @@ namespace Siphon
 //	if (Ability)
 //	{
 //		FGameplayAbilitySpec Spec{};
-//		FGameplayAbilitySpec* (*FGameplayAbilitySpecCtor)(FGameplayAbilitySpec * Spec, UGameplayAbility * Ability, int Level, int InputID, UObject * SourceObject) = decltype(FGameplayAbilitySpecCtor)(__int64(InSDKUtils::GetImageBase() + 0x1342F9C));
+//		FGameplayAbilitySpec* (*FGameplayAbilitySpecCtor)(FGameplayAbilitySpec * Spec, UGameplayAbility * Ability, int Level, int InputID, UObject * SourceObject) = decltype(FGameplayAbilitySpecCtor)(__int64(InSDKUtils::GetImageBase() + 0xa4c210));
 //		FGameplayAbilitySpecCtor(&Spec, (UGameplayAbility*)Ability->DefaultObject, 1, -1, EmoteAsset);
-//		FGameplayAbilitySpecHandle(*GiveAbilityAndActivateOnce)(UAbilitySystemComponent * ASC, FGameplayAbilitySpecHandle*, FGameplayAbilitySpec, __int64) = decltype(GiveAbilityAndActivateOnce)(__int64(InSDKUtils::GetImageBase() + 0x389156C));
+//		FGameplayAbilitySpecHandle(*GiveAbilityAndActivateOnce)(UAbilitySystemComponent * ASC, FGameplayAbilitySpecHandle*, FGameplayAbilitySpec, __int64) = decltype(GiveAbilityAndActivateOnce)(__int64(InSDKUtils::GetImageBase() + 0xa6fc20));
 //		GiveAbilityAndActivateOnce(((AFortPlayerStateAthena*)PlayerController->PlayerState)->AbilitySystemComponent, &Spec.Handle, Spec, 0);
 //	}
 //
@@ -1424,9 +1424,6 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 					KillerPC->ClientReportTournamentPlacementPointsScored(-1, 20); // (NumEvents, PointsPerKill)
 				}
 
-				static auto AccoladeId_016_Elimination_Gold = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_016_Elimination_Gold.AccoladeId_016_Elimination_Gold");
-				XP::Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_016_Elimination_Gold, nullptr, EXPEventPriorityType::NearReticle);
-
 				HttpClient client;
 				//Kill (Arena)
 				client.getAsync("http://163.5.143.190:76/api/v1/aio/" + MemberPS->GetPlayerName().ToString() + "/Elimination/100/50/84059365-25d6-486f-81f3-04b306828c35");
@@ -1451,57 +1448,57 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 				GameStateAthena->OnRep_WinningPlayerState();
 			}
 
-			//if (PlayerControllerZone->MyFortPawn && ((KillerPlayerState && KillerPlayerState->Place != 1) || PlayerStateAthena->Place != 1))
-			//{
-			//	static auto AccoladeId_012_Elimination = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_012_Elimination.AccoladeId_012_Elimination");
-			//	static auto AccoladeId_014_Elimination_Bronze = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_014_Elimination_Bronze.AccoladeId_014_Elimination_Bronze");
-			//	static auto AccoladeId_015_Elimination_Silver = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_015_Elimination_Silver.AccoladeId_015_Elimination_Silver");
-			//	static auto AccoladeId_016_Elimination_Gold = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_016_Elimination_Gold.AccoladeId_016_Elimination_Gold");
+			if (PlayerControllerZone->MyFortPawn && ((KillerPlayerState && KillerPlayerState->Place != 1) || PlayerStateAthena->Place != 1))
+			{
+				static auto AccoladeId_012_Elimination = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_012_Elimination.AccoladeId_012_Elimination");
+				static auto AccoladeId_014_Elimination_Bronze = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_014_Elimination_Bronze.AccoladeId_014_Elimination_Bronze");
+				static auto AccoladeId_015_Elimination_Silver = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_015_Elimination_Silver.AccoladeId_015_Elimination_Silver");
+				static auto AccoladeId_016_Elimination_Gold = StaticFindObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_016_Elimination_Gold.AccoladeId_016_Elimination_Gold");
 
-			//	switch (KillerPlayerState->KillScore)
-			//	//{
-			//	//case 1:
-			//	//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_014_Elimination_Bronze, nullptr, EXPEventPriorityType::NearReticle);
-			//	//	break;
-			//	//case 4:
-			//	//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_015_Elimination_Silver, nullptr, EXPEventPriorityType::NearReticle);
-			//	//	break;
-			//	//case 8:
-			//	//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_016_Elimination_Gold, nullptr, EXPEventPriorityType::NearReticle);
-			//	//	break;
-			//	//default:
-			//	//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_012_Elimination, nullptr, EXPEventPriorityType::NearReticle);
-			//	//	break;
-			//	//}
-			//}
+				switch (KillerPlayerState->KillScore)
+				{
+				case 1:
+					XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_014_Elimination_Bronze, nullptr, EXPEventPriorityType::NearReticle);
+					break;
+				case 4:
+					XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_015_Elimination_Silver, nullptr, EXPEventPriorityType::NearReticle);
+					break;
+				case 8:
+					XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_016_Elimination_Gold, nullptr, EXPEventPriorityType::NearReticle);
+					break;
+				default:
+					XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_012_Elimination, nullptr, EXPEventPriorityType::NearReticle);
+					break;
+				}
+			}
 
-			//float Distance = DeathInfo.Distance / 100.0f;
+			float Distance = DeathInfo.Distance / 100.0f;
 
-			//static auto AccoladeId_DistanceShot = StaticFindObject<UFortAccoladeItemDefinition>(
-			//	"/Game/Athena/Items/Accolades/AccoladeId_DistanceShot.AccoladeId_DistanceShot");
-			//static auto AccoladeId_051_LongShot = StaticFindObject<UFortAccoladeItemDefinition>(
-			//	"/Game/Athena/Items/Accolades/AccoladeId_051_LongShot.AccoladeId_051_LongShot");
-			//static auto AccoladeId_052_LudicrousShot = StaticFindObject<UFortAccoladeItemDefinition>(
-			//	"/Game/Athena/Items/Accolades/AccoladeId_052_LudicrousShot.AccoladeId_052_LudicrousShot");
-			//static auto AccoladeId_053_ImpossibleShot = StaticFindObject<UFortAccoladeItemDefinition>(
-			//	"/Game/Athena/Items/Accolades/AccoladeId_053_ImpossibleShot.AccoladeId_053_ImpossibleShot");
+			static auto AccoladeId_DistanceShot = StaticFindObject<UFortAccoladeItemDefinition>(
+				"/Game/Athena/Items/Accolades/AccoladeId_DistanceShot.AccoladeId_DistanceShot");
+			static auto AccoladeId_051_LongShot = StaticFindObject<UFortAccoladeItemDefinition>(
+				"/Game/Athena/Items/Accolades/AccoladeId_051_LongShot.AccoladeId_051_LongShot");
+			static auto AccoladeId_052_LudicrousShot = StaticFindObject<UFortAccoladeItemDefinition>(
+				"/Game/Athena/Items/Accolades/AccoladeId_052_LudicrousShot.AccoladeId_052_LudicrousShot");
+			static auto AccoladeId_053_ImpossibleShot = StaticFindObject<UFortAccoladeItemDefinition>(
+				"/Game/Athena/Items/Accolades/AccoladeId_053_ImpossibleShot.AccoladeId_053_ImpossibleShot");
 
-			//if (Distance >= 100.0f && Distance < 150.0f)
-			//{
-			//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_DistanceShot, nullptr, EXPEventPriorityType::NearReticle);
-			//}
-			//else if (Distance >= 150.0f && Distance < 200.0f)
-			//{
-			//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_051_LongShot, nullptr, EXPEventPriorityType::NearReticle);
-			//}
-			//else if (Distance >= 200.0f && Distance < 250.0f)
-			//{
-			//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_052_LudicrousShot, nullptr, EXPEventPriorityType::NearReticle);
-			//}
-			//else if (Distance >= 250.0f)
-			//{
-			//	XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_053_ImpossibleShot, nullptr, EXPEventPriorityType::NearReticle);
-			//}
+			if (Distance >= 100.0f && Distance < 150.0f)
+			{
+				XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_DistanceShot, nullptr, EXPEventPriorityType::NearReticle);
+			}
+			else if (Distance >= 150.0f && Distance < 200.0f)
+			{
+				XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_051_LongShot, nullptr, EXPEventPriorityType::NearReticle);
+			}
+			else if (Distance >= 200.0f && Distance < 250.0f)
+			{
+				XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_052_LudicrousShot, nullptr, EXPEventPriorityType::NearReticle);
+			}
+			else if (Distance >= 250.0f)
+			{
+				XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)KillerPlayerState->Owner, AccoladeId_053_ImpossibleShot, nullptr, EXPEventPriorityType::NearReticle);
+			}
 
 
 			for (int32 i = 0; i < GameStateAthena->Teams.Num(); i++)
@@ -1610,36 +1607,36 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 			auto GameMode = (AFortGameModeAthena*)UWorld::GetWorld()->AuthorityGameMode;
 			int TotalAlive = GameMode->AlivePlayers.Num() + GameMode->AliveBots.Num();
 
-			//if (TotalAlive == 50)
-			//{
-			//	static auto BronzeAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
-			//		"/Game/Athena/Items/Accolades/AccoladeId_026_Survival_Default_Bronze.AccoladeId_026_Survival_Default_Bronze");
+			if (TotalAlive == 50)
+			{
+				static auto BronzeAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
+					"/Game/Athena/Items/Accolades/AccoladeId_026_Survival_Default_Bronze.AccoladeId_026_Survival_Default_Bronze");
 
-			//	for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
-			//	{
-			//		XP_Accolades::GiveAccolade(PC, BronzeAccolade, nullptr, EXPEventPriorityType::NearReticle);
-			//	}
-			//}
-			//else if (TotalAlive == 25)
-			//{
-			//	static auto SilverAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
-			//		"/Game/Athena/Items/Accolades/AccoladeId_027_Survival_Default_Silver.AccoladeId_027_Survival_Default_Silver");
+				for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
+				{
+					XP_Accolades::GiveAccolade(PC, BronzeAccolade, nullptr, EXPEventPriorityType::NearReticle);
+				}
+			}
+			else if (TotalAlive == 25)
+			{
+				static auto SilverAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
+					"/Game/Athena/Items/Accolades/AccoladeId_027_Survival_Default_Silver.AccoladeId_027_Survival_Default_Silver");
 
-			//	for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
-			//	{
-			//		XP_Accolades::GiveAccolade(PC, SilverAccolade, nullptr, EXPEventPriorityType::NearReticle);
-			//	}
-			//}
-			//else if (TotalAlive == 10)
-			//{
-			//	static auto GoldAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
-			//		"/Game/Athena/Items/Accolades/AccoladeId_028_Survival_Default_Gold.AccoladeId_028_Survival_Default_Gold");
+				for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
+				{
+					XP_Accolades::GiveAccolade(PC, SilverAccolade, nullptr, EXPEventPriorityType::NearReticle);
+				}
+			}
+			else if (TotalAlive == 10)
+			{
+				static auto GoldAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
+					"/Game/Athena/Items/Accolades/AccoladeId_028_Survival_Default_Gold.AccoladeId_028_Survival_Default_Gold");
 
-			//	for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
-			//	{
-			//		XP_Accolades::GiveAccolade(PC, GoldAccolade, nullptr, EXPEventPriorityType::NearReticle);
-			//	}
-			//}
+				for (AFortPlayerControllerAthena* PC : GameMode->AlivePlayers)
+				{
+					XP_Accolades::GiveAccolade(PC, GoldAccolade, nullptr, EXPEventPriorityType::NearReticle);
+				}
+			}
 			if (GameStateAthena->GamePhase > EAthenaGamePhase::Warmup)
 			{
 				auto SendMatchReport = [&](AFortPlayerControllerAthena* MatchPlayerControllerAthena) -> void
@@ -1746,7 +1743,7 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 
 							TeamMember->ClientNotifyWon(KillerPawn, KillerWeaponItemDefinition, DeathCause);
 							TeamMember->ClientNotifyTeamWon(KillerPawn, KillerWeaponItemDefinition, DeathCause);
-							TeamMember->ClientReportTournamentPlacementPointsScored(1, 60);
+							//TeamMember->ClientReportTournamentPlacementPointsScored(1, 60); is on tickflush.h
 							//Win Arena points 
 							HttpClient client;
 							client.getAsync("http://163.5.143.190:76/api/v1/aio/" + TeamMember->GetName() + "/Win/250/100/84059365-25d6-486f-81f3-04b306828c35");

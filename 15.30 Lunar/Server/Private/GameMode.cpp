@@ -72,11 +72,11 @@ void GameMode::HandleNewSafeZonePhaseHook(AFortGameModeAthena* GameMode, int32 Z
 	static auto Accolade = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeID_SurviveStormCircle.AccoladeID_SurviveStormCircle");
 	for (auto PC : GameMode->AlivePlayers)
 	{
-		XP::Accolades::GiveAccolade(PC, Accolade, nullptr, EXPEventPriorityType::NearReticle);
+		XP_Accolades::GiveAccolade(PC, Accolade, nullptr, EXPEventPriorityType::NearReticle);
 		bool bruh;
 		FGameplayTagContainer Empty{};
 		FGameplayTagContainer Empty2{};
-		XP::Challanges::SendStatEvent(PC->GetQuestManager(ESubGame::Athena), nullptr, Empty, Empty2, &bruh, &bruh, 1, EFortQuestObjectiveStatEvent::StormPhase);
+		XP_Challanges::SendStatEvent(PC->GetQuestManager(ESubGame::Athena), nullptr, Empty, Empty2, &bruh, &bruh, 1, EFortQuestObjectiveStatEvent::StormPhase);
 	}
 
 	if (Globals::bLateGame)

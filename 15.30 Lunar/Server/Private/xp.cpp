@@ -2,7 +2,7 @@
 
 static bool QuestEnabled = true;
 
-void XP::Accolades::GiveAccolade(AFortPlayerControllerAthena* PC, UFortAccoladeItemDefinition* AccoladeDef, UFortQuestItemDefinition* QuestDef, EXPEventPriorityType Priority)
+void XP_Accolades::GiveAccolade(AFortPlayerControllerAthena* PC, UFortAccoladeItemDefinition* AccoladeDef, UFortQuestItemDefinition* QuestDef, EXPEventPriorityType Priority)
 {
 	if (!PC || !PC->XPComponent || !AccoladeDef)
 		return;
@@ -48,7 +48,7 @@ void AddStatObjective(AFortPlayerControllerAthena* PC, FFortUpdatedObjectiveStat
 	PC->OnRep_UpdatedObjectiveStats();
 }
 
-void XP::Challanges::UpdateChallange(UFortQuestManager* QuestManager, UFortQuestItemDefinition* QuestItem, FName BackendName, int Count)
+void XP_Challanges::UpdateChallange(UFortQuestManager* QuestManager, UFortQuestItemDefinition* QuestItem, FName BackendName, int Count)
 {
 	static FName map = UKismetStringLibrary::Conv_StringToName(L"Apollo_Terrain");
 	if (!UWorld::GetWorld() || !UWorld::GetWorld()->GameState || UWorld::GetWorld()->Name.ComparisonIndex != map.ComparisonIndex || ((AFortGameStateAthena*)UWorld::GetWorld()->GameState)->GamePhase <= EAthenaGamePhase::Aircraft)
@@ -108,7 +108,7 @@ void XP::Challanges::UpdateChallange(UFortQuestManager* QuestManager, UFortQuest
 	QuestManager->HandleQuestUpdated(PC, QuestItem, BackendName, Stat.StatValue, DeltaChange, nullptr, ObjCompleted, /*CurrentQuest->GetNumObjectivesComplete() >= CurrentQuest->Objectives.Num()*/false);
 }
 
-void XP::Challanges::SendComplexCustomStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count)
+void XP_Challanges::SendComplexCustomStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count)
 {
 	if (!ManagerComp || !Count)
 		return;
@@ -127,7 +127,7 @@ bool ContainsTag(FGameplayTagContainer Container, FName Tag)
 	return false;
 }
 
-void XP::Challanges::SendStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count, EFortQuestObjectiveStatEvent StatEvent)
+void XP_Challanges::SendStatEvent(UFortQuestManager* ManagerComp, UObject* TargetObject, FGameplayTagContainer& AdditionalSourceTags, FGameplayTagContainer& TargetTags, bool* QuestActive, bool* QuestCompleted, int32 Count, EFortQuestObjectiveStatEvent StatEvent)
 {
 	if (!QuestEnabled)
 		return;
@@ -183,19 +183,19 @@ void XP::Challanges::SendStatEvent(UFortQuestManager* ManagerComp, UObject* Targ
 		static UFortAccoladeItemDefinition* ElimDef4 = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_014_Elimination_Silver.AccoladeId_014_Elimination_Silver");
 		static UFortAccoladeItemDefinition* ElimDef8 = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_014_Elimination_Gold.AccoladeId_014_Elimination_Gold");
 
-		Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef, nullptr, EXPEventPriorityType::NearReticle);
+		XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef, nullptr, EXPEventPriorityType::NearReticle);
 
 		if (Kills == 1)
 		{
-			Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef1, nullptr, EXPEventPriorityType::NearReticle);
+			XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef1, nullptr, EXPEventPriorityType::NearReticle);
 		}
 		if (Kills == 4)
 		{
-			Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef4, nullptr, EXPEventPriorityType::NearReticle);
+			XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef4, nullptr, EXPEventPriorityType::NearReticle);
 		}
 		if (Kills == 8)
 		{
-			Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef8, nullptr, EXPEventPriorityType::NearReticle);
+			XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), ElimDef8, nullptr, EXPEventPriorityType::NearReticle);
 		}
 	}
 
@@ -208,12 +208,12 @@ void XP::Challanges::SendStatEvent(UFortQuestManager* ManagerComp, UObject* Targ
 		if (IsChest)
 		{
 			static auto SearchDef = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_007_SearchChests.AccoladeId_007_SearchChests");
-			Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), SearchDef, nullptr, EXPEventPriorityType::NearReticle);
+			XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), SearchDef, nullptr, EXPEventPriorityType::NearReticle);
 		}
 		else if (IsAmmoBox)
 		{
 			static auto SearchDef = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_011_SearchAmmoBox.AccoladeId_011_SearchAmmoBox");
-			Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), SearchDef, nullptr, EXPEventPriorityType::NearReticle);
+			XP_Accolades::GiveAccolade((AFortPlayerControllerAthena*)ManagerComp->GetPlayerControllerBP(), SearchDef, nullptr, EXPEventPriorityType::NearReticle);
 		}
 	}
 
@@ -321,7 +321,7 @@ void XP::Challanges::SendStatEvent(UFortQuestManager* ManagerComp, UObject* Targ
 	AdditionalSourceTags.ParentTags.Free();
 }
 
-bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
+bool XP_Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 {
 	return true;
 	static FName map = UKismetStringLibrary::Conv_StringToName(L"Apollo_Terrain");
@@ -363,7 +363,7 @@ bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 		bool bruh;
 		bool isOnFoot = false;
 		FGameplayTagContainer Empty{};
-		XP::Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, isOnFoot ? OnFootSourceTags : SandTunnelSourceTags, Empty, &bruh, &bruh, MetersTravelled);
+		XP_Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, isOnFoot ? OnFootSourceTags : SandTunnelSourceTags, Empty, &bruh, &bruh, MetersTravelled);
 	}
 	else if (Ability->Class == OnFootClass)
 	{
@@ -381,7 +381,7 @@ bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 		}
 		bool bruh;
 		FGameplayTagContainer Empty{};
-		XP::Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, OnFootSourceTags, Empty, &bruh, &bruh, MetersTravelled);
+		XP_Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, OnFootSourceTags, Empty, &bruh, &bruh, MetersTravelled);
 		MetersTravelled = 0;
 	}
 	else if (Ability->Class == SwimDistanceClass)
@@ -395,7 +395,7 @@ bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 		int& MetersTravelled = *(int*)(__int64(Ability) + MetersTravelledOffset);
 		bool bruh;
 		FGameplayTagContainer Empty{};
-		XP::Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, SwimDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
+		XP_Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, SwimDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
 		MetersTravelled = 0;
 	}
 	else if (Ability->Class == VehicleDistanceClass)
@@ -416,7 +416,7 @@ bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 		}
 		bool bruh;
 		FGameplayTagContainer Empty{};
-		XP::Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, VehicleDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
+		XP_Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, VehicleDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
 		MetersTravelled = 0;
 	}
 	else if (Ability->Class == GlideDistanceClass)
@@ -437,8 +437,28 @@ bool XP::Challanges::SendDistanceUpdate(UGameplayAbility* Ability)
 		}
 		bool bruh;
 		FGameplayTagContainer Empty{};
-		XP::Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, GlideDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
+		XP_Challanges::SendComplexCustomStatEvent(PlayerController->GetQuestManager(ESubGame::Athena), nullptr, GlideDistanceTags, Empty, &bruh, &bruh, MetersTravelled);
 		MetersTravelled = 0;
 	}
 	return true;
+}
+
+
+
+__int64 (*TestOG)(UObject* Ability, __int64* a2, char* a3);
+__int64 Test(UGameplayAbility* Ability, __int64* a2, char* a3)
+{
+	if (Ability)
+	{
+		if (!XP_Challanges::SendDistanceUpdate(Ability))
+			return 0;
+	}
+	return TestOG(Ability, a2, a3);
+}
+
+
+void XP_Challanges::InitXPHooks()
+{
+	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x3ABFE40), Test, (LPVOID*)&TestOG);
+
 }
