@@ -108,12 +108,6 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 
 	static bool bInitPlaylist = false;
 
-	if (Globals::Arena)
-	{
-		GameState->EventTournamentRound = EEventTournamentRound::Arena;
-		GameState->OnRep_EventTournamentRound();
-	}
-
 	if (!bInitPlaylist)
 	{
 		/*UFortPlaylistAthena* Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");*/
@@ -151,6 +145,11 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 
 		GameState->CachedSafeZoneStartUp = ESafeZoneStartUp::StartsWithAirCraft;
 
+if (Globals::Arena)
+	{
+		GameState->EventTournamentRound = EEventTournamentRound::Arena;
+		GameState->OnRep_EventTournamentRound();
+	}
 		for (auto& Level : Playlist->AdditionalLevels)
 		{
 			bool Success = false;
