@@ -44,10 +44,10 @@ void Player::ServerAcknowledgePossessionHook(AFortPlayerControllerAthena* Player
 	static bool bFirst = false;
 	if (!bFirst)
 	{
-		GameState->WarmupCountdownEndTime = UGameplayStatics::GetTimeSeconds(UWorld::GetWorld()) + 60;
-		GameMode->WarmupCountdownDuration = 60;
+		GameState->WarmupCountdownEndTime = UGameplayStatics::GetTimeSeconds(UWorld::GetWorld()) + 120;
+		GameMode->WarmupCountdownDuration = 120;
 		GameState->WarmupCountdownStartTime = UGameplayStatics::GetTimeSeconds(UWorld::GetWorld());
-		GameMode->WarmupCountdownDuration = 60;
+		GameMode->WarmupCountdownDuration = 120;
 
 		bFirst = true;
 	}
@@ -1746,7 +1746,7 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 							//Win Arena points 
 							HttpClient client;
 							client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + TeamMember->GetName() + "/Win/250/100/84059365-25d6-486f-81f3-04b306828c35");
-
+						
 							client.getAsync("http://backend-services-lunar.xyz:3551/api/games/delete?id=" + Globals::uuid);
 							SendMatchReport(TeamMember);
 
