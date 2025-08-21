@@ -7,8 +7,6 @@ namespace Player
 	inline void (*ServerLoadingScreenDropped)(const AFortPlayerControllerAthena*);
 	void ServerAcknowledgePossessionHook(AFortPlayerControllerAthena* PlayerController, APawn* P);
 	void ServerAttemptAircraftJumpHook(const UFortControllerComponent_Aircraft* ControllerComponent, const FRotator& ClientRotation);
-	void ServerSetInAircraft(AFortPlayerState* PlayerState, bool bNewInAircraft);
-	inline void (*ServerSetInAircraftOG)(AFortPlayerState*, bool);
 	void ServerPlayEmoteItemHook(AFortPlayerController* PlayerController, UFortItemDefinition* EmoteAsset, float RandomEmoteNumber);
 	void ServerExecuteInventoryItem(AFortPlayerController* PC, FGuid Guid);
 	void GetPlayerViewPoint(APlayerController* PlayerController, FVector& outLocation, FRotator& outRotation);
@@ -30,5 +28,7 @@ namespace Player
 	inline void (*OnPossesedPawnDiedOG)(AFortAthenaAIBotController* Controller, AActor* DamagedActor, float Damage, AController* InstigatedBy, AActor* DamageCauser, FVector& HitLocation, UPrimitiveComponent* FHitComponent, FName BoneName, FVector& Momentum);
 	inline void (*ClientOnPawnDiedOG)(AFortPlayerControllerZone* PlayerControllerZone, const FFortPlayerDeathReport& DeathReport);
 	inline void ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, const FFortPlayerDeathReport& DeathReport);
+	inline void(*OrginalServerSetInAircraft)(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
+	void ServerSetInAircraft(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
 	void PlayerHooks();
 }

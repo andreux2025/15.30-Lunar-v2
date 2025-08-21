@@ -3,6 +3,7 @@
 #include "../Public/FortInventory.h"
 #include "../Public/xp.h"
 #include "../../framework.h"
+#include "../Public/LateGame.h"
 
 void UpdatePlayerNumpber(int NumberOfPlayer)
 {
@@ -801,7 +802,7 @@ void Player::ServerCreateBuildingActor(AFortPlayerControllerAthena* PlayerContro
 	auto ItemEntry = FortInventory::FindItemEntry(PlayerController, ItemDefinition);
 
 	if (ItemEntry && ItemEntry->Count >= 10) {
-		FortInventory::RemoveItem(PlayerController, ItemEntry->ItemGuid, 0);
+		FortInventory::RemoveItem(PlayerController, ItemEntry->ItemGuid, 10);
 	}
 	else {
 		std::cout << "Not enough resources or ItemEntry is null." << std::endl;
@@ -887,20 +888,6 @@ void Player::ServerAttemptAircraftJumpHook(const UFortControllerComponent_Aircra
 
 	GameMode->RestartPlayer(PlayerController);
 	PlayerController->ClientSetRotation(ClientRotation, true);
-}
-
-
-void Player::ServerSetInAircraft(AFortPlayerState* PlayerState, bool bNewInAircraft) {
-	if (!PlayerState)
-		return;
-
-	auto PlayerController = Cast<AFortPlayerControllerAthena>(PlayerState->GetOwner());
-	if (!PlayerController)
-		return;
-
-	FortInventory::RemoveAllDroppableItems(PlayerController);
-
-	return ServerSetInAircraftOG(PlayerState, bNewInAircraft);
 }
 
 void Player::ServerExecuteInventoryItem(AFortPlayerController* PC, FGuid Guid)
@@ -1846,6 +1833,43 @@ void Player::GetPlayerViewPoint(APlayerController* PC, FVector& outLocation, FRo
 		GetPlayerViewPointOG(PC, outLocation, outRotation);
 	}
 }
+
+void Player::ServerSetInAircraft(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft)
+{
+
+	AFortPlayerControllerAthena* PC = (AFortPlayerControllerAthena*)PlayerState->Owner;
+
+	/*BattleBus = GetGameState()->GetAircraft(0);*/
+
+	if (PC && PC->WorldInventory)
+	{
+		for (int i = PC->WorldInventory->Inventory.ReplicatedEntries.Num() - 1; i >= 0; i--)
+		{
+			if (((UFortWorldItemDefinition*)PC->WorldInventory->Inventory.ReplicatedEntries[i].ItemDefinition)->bCanBeDropped && !GivenLootPlayers.Contains(PC) && Globals::bLateGame)
+			{
+				int Count = PC->WorldInventory->Inventory.ReplicatedEntries[i].Count;
+				FortInventory::RemoveItem(PC, PC->WorldInventory->Inventory.ReplicatedEntries[i].ItemGuid, Count);
+			}
+			else if (((UFortWorldItemDefinition*)PC->WorldInventory->Inventory.ReplicatedEntries[i].ItemDefinition)->bCanBeDropped && !Globals::bLateGame)
+			{
+				int Count = PC->WorldInventory->Inventory.ReplicatedEntries[i].Count;
+				FortInventory::RemoveItem(PC, PC->WorldInventory->Inventory.ReplicatedEntries[i].ItemGuid, Count);
+			}
+		}
+	}
+	if (Globals::bLateGame)
+	{ 
+		if (!GivenLootPlayers.Contains(PC))
+		{
+			GiveLoadout(PC);
+			GivenLootPlayers.Add(PC);
+		}
+	}
+
+	return OrginalServerSetInAircraft(PlayerState, bNewInAircraft);
+}
+
+
 void Player::PlayerHooks()
 {
 	CantBuild = decltype(CantBuild)(InSDKUtils::GetImageBase() + 0x278d0d0);
@@ -1867,9 +1891,9 @@ void Player::PlayerHooks()
 	SwapVFTs(APlayerPawn_Athena_C::StaticClass()->DefaultObject, 0x1FF, Player::ServerHandlePickup, (LPVOID*)&Player::ServerHandlePickupOG);
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x221, Player::ServerAttemptInventoryDrop, nullptr);
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x3400620), OnCapsuleBeginOverlap, (void**)&OnCapsuleBeginOverlapOG2);
-	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x1FE49B0), Player::OnPawnAISpawnedHook, (PVOID*)&Player::OnPawnAISpawnedHookOG);
+	/*MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x1FE49B0), Player::OnPawnAISpawnedHook, (PVOID*)&Player::OnPawnAISpawnedHookOG);*/
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x33ee900), Player::ClientOnPawnDied, (LPVOID*)(&Player::ClientOnPawnDiedOG));
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x2c6cc80), Player::GetPlayerViewPoint, (PVOID*)&Player::GetPlayerViewPointOG);
-
+	HookVTable(AFortPlayerStateAthena::StaticClass()->DefaultObject, 0xFD, ServerSetInAircraft, (PVOID*)&OrginalServerSetInAircraft);
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CD, Player::ServerPlayEmoteItemHook, nullptr);
 }

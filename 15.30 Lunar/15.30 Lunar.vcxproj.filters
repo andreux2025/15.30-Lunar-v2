@@ -102,6 +102,9 @@
     <ClInclude Include="Server\Public\uuid.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Public\LateGame.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

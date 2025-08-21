@@ -335,6 +335,17 @@ namespace UC
 			NumElements = 0;
 		}
 
+		template<typename T>
+		bool Contains(const T& Item)
+		{
+			for (int i = 0; i < this->Num(); ++i)
+			{
+				if ((*this)[i] == Item)
+					return true;
+			}
+			return false;
+		}
+
 	public:
 		inline int32 Num() const { return NumElements; }
 		inline int32 Max() const { return MaxElements; }

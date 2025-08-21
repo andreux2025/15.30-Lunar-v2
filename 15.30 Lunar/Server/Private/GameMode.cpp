@@ -140,7 +140,7 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 		GameMode->WarmupRequiredPlayerCount = 2;
 		GameMode->DefaultWarmupEarlyRequiredPlayerPercent = 100.f;
 
-		GameMode->bAllowSpectateAfterDeath = true;
+		/*GameMode->bAllowSpectateAfterDeath = true;*/
 
 		GameState->DefaultRebootMachineHotfix = 1;
 

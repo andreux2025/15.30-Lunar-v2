@@ -22,6 +22,7 @@ inline inline UFortAthenaAISpawnerDataComponentList* GlobalList = nullptr;
 inline std::vector<UAthenaCharacterItemDefinition*> CharacterItemDefs;
 inline std::vector<UAthenaBackpackItemDefinition*> BackpackItemDefs;
 inline std::vector<UAthenaDanceItemDefinition*> EmoteItemDefs;
+inline TArray<APlayerController*> GivenLootPlayers;
 namespace Globals
 {
 	inline FName SpectatingName;
