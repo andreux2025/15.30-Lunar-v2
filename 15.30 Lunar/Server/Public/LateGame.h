@@ -6,8 +6,10 @@
 #include <random>        
 #include "FortInventory.h"
 std::vector<std::string> Assault_rifle = {
-    "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03" // scar legendary
-    "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_VR_Ore_T03.WID_Assault_AutoHigh_Athena_VR_Ore_T03"// scar epic
+    "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03", // scar legendary
+    "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_VR_Ore_T03.WID_Assault_AutoHigh_Athena_VR_Ore_T03",// scar epic
+    "/Game/Athena/Items/Weapons/WID_Assault_SemiAuto_Athena_UR_Ore_T03.WID_Assault_SemiAuto_Athena_UR_Ore_T03",
+    "/Game/Athena/Items/Weapons/Boss/WID_Boss_Midas.WID_Boss_Midas"
 };
 
 std::vector<std::string> Shotgun = {
@@ -103,7 +105,6 @@ std::vector<std::string> Shotgun = {
 std::vector<std::string> Consumables = {
     "/Game/Athena/Items/Consumables/Shields/Athena_Shields.Athena_Shields",
     "/Game/Athena/Items/Consumables/ShieldSmall/Athena_ShieldSmall.Athena_ShieldSmall",
-    "/Game/Athena/Items/Consumables/AppleSun/WID_Athena_AppleSun.WID_Athena_AppleSun",
     "/Game/Athena/Items/Consumables/Flopper/Effective/WID_Athena_Flopper_Effective.WID_Athena_Flopper_Effective",
 };
 
