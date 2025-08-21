@@ -1388,7 +1388,7 @@ void GiveSiphonBonus(AFortPlayerController* PlayerController, AFortPawn* Pawn, b
 			float Health = Pawn->GetHealth();
 			float Shield = Pawn->GetShield();
 
-			float SiphonAmount = 200.0f;
+			float SiphonAmount = 50.0f;
 			float RemainingSiphonAmount = SiphonAmount;
 
 			if (Health < MaxHealth)
