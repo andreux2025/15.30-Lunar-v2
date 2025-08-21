@@ -1053,6 +1053,7 @@ enum class EXPEventPriorityType : uint8
 	TopCenter                                = 2,
 	Feed                                     = 3,
 	EXPEventPriorityType_MAX                 = 4,
+	Normal									 = 5,
 };
 
 // Enum FortniteGame.EMatchmakingCancelReasonV2

@@ -4,6 +4,7 @@
 #include "../Public/xp.h"
 #include "../../framework.h"
 #include "../Public/LateGame.h"
+#include "../Public/Looting.h"
 
 void UpdatePlayerNumpber(int NumberOfPlayer)
 {
@@ -1284,6 +1285,77 @@ void Player::ServerSetInAircraft(AFortPlayerStateAthena* PlayerState, bool bNewI
 	return OrginalServerSetInAircraft(PlayerState, bNewInAircraft);
 }
 
+void Player::ServerAttemptInteract(UFortControllerComponent_Interaction* ControllerComp, AActor* ReceivingActor, UPrimitiveComponent* InteractComponent, ETInteractionType InteractType, UObject* OptionalObjectData, EInteractionBeingAttempted InteractionBeingAttempted, int32 RequestId) {
+
+	ServerAttemptInteractOG(ControllerComp, ReceivingActor, InteractComponent, InteractType, OptionalObjectData, InteractionBeingAttempted, RequestId);
+
+	if (!ControllerComp || !ReceivingActor)
+		return ServerAttemptInteractOG(ControllerComp, ReceivingActor, InteractComponent, InteractType, OptionalObjectData, InteractionBeingAttempted, RequestId);
+
+	auto PC = ((AFortPlayerControllerAthena*)ControllerComp->GetOwner());
+	static std::map<AFortPlayerControllerAthena*, int> ChestsSearched{};
+	AFortPlayerControllerAthena* PlayerController = Cast<AFortPlayerControllerAthena>(ControllerComp->GetOwner());
+	if (!PlayerController) {
+		return ServerAttemptInteractOG(ControllerComp, ReceivingActor, InteractComponent, InteractType, OptionalObjectData, InteractionBeingAttempted, RequestId);
+	}
+
+	if (auto Vehicle = Cast<AFortAthenaVehicle>(ReceivingActor)) {
+		//Vehicles::GiveVehicleWeapon(PlayerController, Vehicle); soon!
+	}
+	else if (ReceivingActor->IsA(ABGA_Petrol_Pickup_C::StaticClass()))
+	{
+		auto petrolpikcup = (ABGA_Petrol_Pickup_C*)ReceivingActor;
+		FortInventory::GiveItem(PC, petrolpikcup->WeaponItemDefinition, 1, 100);// fixed gas can can't get pickup
+	}
+	else if (ReceivingActor->GetName().starts_with("B_Athena_LootCarrier"))
+	{
+		SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
+	}
+	else if (ReceivingActor->GetName().starts_with("AthenaSupplyDrop_Llama_C_"))
+	{
+
+		SpawnllamaLoot((ABuildingContainer*)ReceivingActor);
+	}
+	else if (ReceivingActor->GetName().starts_with("AthenaSupplyDrop"))
+	{
+		SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
+	}
+	else if (ReceivingActor && ReceivingActor->Class && ReceivingActor->Class->GetName().contains("Tiered_"))
+	{
+		static auto AccoladeDef = StaticLoadObject<UFortAccoladeItemDefinition>(
+			"/Game/Athena/Items/Accolades/AccoladeId_007_SearchChests.AccoladeId_007_SearchChests"
+		);
+
+		if (AccoladeDef)
+		{
+			XP_Accolades::GiveAccolade(PlayerController, AccoladeDef, nullptr, EXPEventPriorityType::Normal);
+		}
+
+		if (!bFirstChestSearched)
+		{
+			bFirstChestSearched = true;
+			static auto FirstChestAccolade = StaticLoadObject<UFortAccoladeItemDefinition>(
+				"/Game/Athena/Items/Accolades/AccoladeId_069_FirstSearchedChest.AccoladeId_069_FirstSearchedChest"
+			);
+			if (FirstChestAccolade)
+			{
+				XP_Accolades::GiveAccolade(PlayerController, FirstChestAccolade, nullptr, EXPEventPriorityType::Normal);
+			}
+		}
+	}
+	else if (ReceivingActor->Class->GetName().contains("Ammo")) {
+		auto AccoladeDef = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeId_011_SearchAmmoBox.AccoladeId_011_SearchAmmoBox");
+		if (AccoladeDef)
+			XP_Accolades::GiveAccolade(PlayerController, AccoladeDef, nullptr, EXPEventPriorityType::Normal);
+	}
+	else if (ReceivingActor->IsA(ABGA_Athena_FlopperSpawn_Parent_C::StaticClass()))
+	{
+		if (!PC || !PC->MyFortPawn)
+			return;
+
+		// what the fuck
+	}
+}
 
 void Player::PlayerHooks()
 {
@@ -1311,4 +1383,5 @@ void Player::PlayerHooks()
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x2c6cc80), Player::GetPlayerViewPoint, (PVOID*)&Player::GetPlayerViewPointOG);
 	HookVTable(AFortPlayerStateAthena::StaticClass()->DefaultObject, 0xFD, ServerSetInAircraft, (PVOID*)&OrginalServerSetInAircraft);
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CD, Player::ServerPlayEmoteItemHook, nullptr);
+	HookVTable(UFortControllerComponent_Interaction::GetDefaultObj(), 0x96, Player::ServerAttemptInteract, (PVOID*)&Player::ServerAttemptInteractOG);
 }
