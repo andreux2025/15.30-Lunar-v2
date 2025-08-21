@@ -32,5 +32,6 @@ namespace Player
 	inline void ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, const FFortPlayerDeathReport& DeathReport);
 	inline void(*OrginalServerSetInAircraft)(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
 	void ServerSetInAircraft(AFortPlayerStateAthena* PlayerState, bool bNewInAircraft);
+	 void ServerSendZiplineState(AFortPlayerPawn* Pawn, FZiplinePawnState InZiplineState);
 	void PlayerHooks();
 }

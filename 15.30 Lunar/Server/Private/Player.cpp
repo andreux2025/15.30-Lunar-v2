@@ -1285,6 +1285,40 @@ void Player::ServerAttemptInteract(UFortControllerComponent_Interaction* Control
 		// what the fuck
 	}
 }
+static void (*OnRep_ZiplineState)(AFortPlayerPawn* Pawn) = decltype(OnRep_ZiplineState)(__int64(GetModuleHandleW(0)) + 0x2c1ae70);
+void Player::ServerSendZiplineState(AFortPlayerPawn* Pawn, FZiplinePawnState InZiplineState)
+{
+	if (InZiplineState.AuthoritativeValue > Pawn->ZiplineState.AuthoritativeValue)
+	{
+		Pawn->ZiplineState = InZiplineState;
+		OnRep_ZiplineState(Pawn);
+
+		if (!Pawn->ZiplineState.bIsZiplining)
+		{
+			if (Pawn->ZiplineState.bJumped)
+			{
+				float ZiplineJumpDampening = -0.5f;
+				float ZiplineJumpStrength = 1500.f;
+
+				auto CharacterMovement = Pawn->CharacterMovement;
+				auto Velocity = CharacterMovement->Velocity;
+
+				FVector LaunchVelocity = { -750, -750, ZiplineJumpStrength };
+
+				if (ZiplineJumpDampening * Velocity.X >= -750.f)
+				{
+					LaunchVelocity.X = fminf(ZiplineJumpDampening * Velocity.X, 750);
+				}
+				if (ZiplineJumpDampening * Velocity.Y >= -750.f)
+				{
+					LaunchVelocity.Y = fminf(ZiplineJumpDampening * Velocity.Y, 750);
+				}
+
+				Pawn->LaunchCharacter(LaunchVelocity, false, false);
+			}
+		}
+	}
+}
 
 void Player::PlayerHooks()
 {
@@ -1313,4 +1347,5 @@ void Player::PlayerHooks()
 	HookVTable(AFortPlayerStateAthena::StaticClass()->DefaultObject, 0xFD, ServerSetInAircraft, (PVOID*)&OrginalServerSetInAircraft);
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CD, Player::ServerPlayEmoteItemHook, nullptr);
 	HookVTable(UFortControllerComponent_Interaction::GetDefaultObj(), 0x96, Player::ServerAttemptInteract, (PVOID*)&Player::ServerAttemptInteractOG);
+	SwapVFTs(APlayerPawn_Athena_C::StaticClass()->DefaultObject, 0x20C, ServerSendZiplineState, nullptr);
 }
