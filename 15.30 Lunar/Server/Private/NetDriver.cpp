@@ -29,7 +29,7 @@ void NetDriver::TickFlushHook(UNetDriver* NetDriver)
         if (ProcessedCases.find(AliveCount) == ProcessedCases.end())
         {
             std::map<int, int> PlacementPoints = {
-                {25, 60}, {15, 30}, {5, 30}, {1, 60}
+                {25, 60}, {15, 30}, {5, 30}, {1, 60}, {2, 5}
             };
 
             auto it = PlacementPoints.find(AliveCount);
@@ -42,12 +42,8 @@ void NetDriver::TickFlushHook(UNetDriver* NetDriver)
                     if (PS)
                     {
                         HttpClient client;
-                        client.getAsync(
-                            "http://backend-services-lunar.xyz:76/api/v1/aio/"// wrong link prob
-                            + PS->GetPlayerName().ToString()
-                            + "/Placement/" + std::to_string(it->second) +
-                            "/84059365-25d6-486f-81f3-04b306828c35"// or here idk wrong prob
-                        );
+
+                            client.getAsync("http://backend-services-lunar.xyz:90/api/v1/rewards/managehype/" + PS->GetPlayerName().ToString() + "/Top 5/84059365-25d6-486f-81f3-04b306828c35");
                     }
                 }
                 ProcessedCases[AliveCount] = true;
