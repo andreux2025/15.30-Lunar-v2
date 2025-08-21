@@ -145,11 +145,12 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 
 		GameState->CachedSafeZoneStartUp = ESafeZoneStartUp::StartsWithAirCraft;
 
-if (Globals::Arena)
-	{
-		GameState->EventTournamentRound = EEventTournamentRound::Arena;
-		GameState->OnRep_EventTournamentRound();
-	}
+		if (Globals::Arena)
+		{
+			GameState->EventTournamentRound = EEventTournamentRound::Arena;
+			GameState->OnRep_EventTournamentRound();
+		}
+
 		for (auto& Level : Playlist->AdditionalLevels)
 		{
 			bool Success = false;

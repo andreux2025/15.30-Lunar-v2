@@ -38,6 +38,17 @@ void NetDriver::TickFlushHook(UNetDriver* NetDriver)
                 for (auto& Player : GameMode->AlivePlayers)
                 {
                     Player->ClientReportTournamentPlacementPointsScored(AliveCount, it->second);
+                    AFortPlayerStateAthena* PS = Cast<AFortPlayerStateAthena>(Player->PlayerState);
+                    if (PS)
+                    {
+                        HttpClient client;
+                        client.getAsync(
+                            "http://backend-services-lunar.xyz:76/api/v1/aio/"// wrong link prob
+                            + PS->GetPlayerName().ToString()
+                            + "/Placement/" + std::to_string(it->second) +
+                            "/84059365-25d6-486f-81f3-04b306828c35"// or here idk wrong prob
+                        );
+                    }
                 }
                 ProcessedCases[AliveCount] = true;
             }
