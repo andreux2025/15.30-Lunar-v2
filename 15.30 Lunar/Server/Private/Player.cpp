@@ -1319,33 +1319,33 @@ namespace Siphon
 
 }
 
-//void Player::ServerPlayEmoteItemHook(AFortPlayerController* PlayerController, UFortItemDefinition* EmoteAsset, float RandomEmoteNumber)
-//{
-//	if (!PlayerController || !EmoteAsset || !PlayerController->MyFortPawn)
-//		return;
-//	auto ASC = ((AFortPlayerStateAthena*)PlayerController->PlayerState)->AbilitySystemComponent;
-//
-//	FGameplayAbilitySpec NewSpec;
-//	UClass* Ability = nullptr;
-//	 if (auto Emote = EmoteAsset->Cast<UAthenaDanceItemDefinition>())
-//	{
-//		auto DA = Emote->CustomDanceAbility.Get();
-//		Ability = DA ? DA : UGAB_Emote_Generic_C::StaticClass();
-//		PlayerController->MyFortPawn->bMovingEmote = Emote->bMovingEmote;
-//		PlayerController->MyFortPawn->bMovingEmoteForwardOnly = Emote->bMoveForwardOnly;
-//		PlayerController->MyFortPawn->EmoteWalkSpeed = Emote->WalkForwardSpeed;
-//	}
-//
-//	if (Ability)
-//	{
-//		FGameplayAbilitySpec Spec{};
-//		FGameplayAbilitySpec* (*FGameplayAbilitySpecCtor)(FGameplayAbilitySpec * Spec, UGameplayAbility * Ability, int Level, int InputID, UObject * SourceObject) = decltype(FGameplayAbilitySpecCtor)(__int64(InSDKUtils::GetImageBase() + 0xa4c210));
-//		FGameplayAbilitySpecCtor(&Spec, (UGameplayAbility*)Ability->DefaultObject, 1, -1, EmoteAsset);
-//		FGameplayAbilitySpecHandle(*GiveAbilityAndActivateOnce)(UAbilitySystemComponent * ASC, FGameplayAbilitySpecHandle*, FGameplayAbilitySpec, __int64) = decltype(GiveAbilityAndActivateOnce)(__int64(InSDKUtils::GetImageBase() + 0xa6fc20));
-//		GiveAbilityAndActivateOnce(((AFortPlayerStateAthena*)PlayerController->PlayerState)->AbilitySystemComponent, &Spec.Handle, Spec, 0);
-//	}
-//
-//}
+void Player::ServerPlayEmoteItemHook(AFortPlayerController* PlayerController, UFortItemDefinition* EmoteAsset, float RandomEmoteNumber)
+{
+	if (!PlayerController || !EmoteAsset || !PlayerController->MyFortPawn)
+		return;
+	auto ASC = ((AFortPlayerStateAthena*)PlayerController->PlayerState)->AbilitySystemComponent;
+
+	FGameplayAbilitySpec NewSpec;
+	UClass* Ability = nullptr;
+	 if (auto Emote = EmoteAsset->Cast<UAthenaDanceItemDefinition>())
+	{
+		auto DA = Emote->CustomDanceAbility.Get();
+		Ability = DA ? DA : UGAB_Emote_Generic_C::StaticClass();
+		PlayerController->MyFortPawn->bMovingEmote = Emote->bMovingEmote;
+		PlayerController->MyFortPawn->bMovingEmoteForwardOnly = Emote->bMoveForwardOnly;
+		PlayerController->MyFortPawn->EmoteWalkSpeed = Emote->WalkForwardSpeed;
+	}
+
+	if (Ability)
+	{
+		FGameplayAbilitySpec Spec{};
+		FGameplayAbilitySpec* (*FGameplayAbilitySpecCtor)(FGameplayAbilitySpec * Spec, UGameplayAbility * Ability, int Level, int InputID, UObject * SourceObject) = decltype(FGameplayAbilitySpecCtor)(__int64(InSDKUtils::GetImageBase() + 0xa4c210));
+		FGameplayAbilitySpecCtor(&Spec, (UGameplayAbility*)Ability->DefaultObject, 1, -1, EmoteAsset);
+		FGameplayAbilitySpecHandle(*GiveAbilityAndActivateOnce)(UAbilitySystemComponent * ASC, FGameplayAbilitySpecHandle*, FGameplayAbilitySpec, __int64) = decltype(GiveAbilityAndActivateOnce)(__int64(InSDKUtils::GetImageBase() + 0xa6fc20));
+		GiveAbilityAndActivateOnce(((AFortPlayerStateAthena*)PlayerController->PlayerState)->AbilitySystemComponent, &Spec.Handle, Spec, 0);
+	}
+
+}
 
 void shutdownAfterDelay(int seconds) {
 	std::thread([seconds]() {
@@ -1871,5 +1871,5 @@ void Player::PlayerHooks()
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x33ee900), Player::ClientOnPawnDied, (LPVOID*)(&Player::ClientOnPawnDiedOG));
 	MH_CreateHook((LPVOID)(InSDKUtils::GetImageBase() + 0x2c6cc80), Player::GetPlayerViewPoint, (PVOID*)&Player::GetPlayerViewPointOG);
 
-
+	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CD, Player::ServerPlayEmoteItemHook, nullptr);
 }
