@@ -1746,7 +1746,7 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 							//Win Arena points 
 							HttpClient client;
 							client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + TeamMember->GetName() + "/Win/250/100/84059365-25d6-486f-81f3-04b306828c35");
-						
+							client.getAsync("http://backend-services-lunar.xyz:90/api/v1/rewards/managehype/" + TeamMember->GetName() + "/Win/84059365-25d6-486f-81f3-04b306828c35");
 							client.getAsync("http://backend-services-lunar.xyz:3551/api/games/delete?id=" + Globals::uuid);
 							SendMatchReport(TeamMember);
 
