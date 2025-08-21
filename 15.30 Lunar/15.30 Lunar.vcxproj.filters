@@ -96,6 +96,12 @@
     <ClInclude Include="Server\Public\xp.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Public\httpclient.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Server\Public\uuid.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

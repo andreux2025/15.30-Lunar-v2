@@ -10,9 +10,12 @@ DWORD WINAPI Main(LPVOID) {
     AllocConsole();
     FILE* File = nullptr;
     freopen_s(&File, "CONOUT$", "w+", stdout);
+    Globals::uuid = UUIDGenerator::generate();
     MH_Initialize();
     SetConsoleTitleA("Lunar 15.30 | Waiting");
-    Sleep(3000);
+    HttpClient client;
+    client.getAsync("http://163.5.143.190:3551/api/games/create?id=" + Globals::uuid + "&game=LATEGAME ARENA&player=0&joined=false&region=EU-SERVER");
+    Sleep(1000);
 
     *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CC) = false;
     *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CD) = true;
@@ -23,7 +26,7 @@ DWORD WINAPI Main(LPVOID) {
     Player::PlayerHooks();
     Abilities::Hooking();
     LootingHooks();
-    XP_Challanges::InitXPHooks();
+    //XP_Challanges::InitXPHooks();
 
    Globals::SpectatingName = UKismetStringLibrary::Conv_StringToName(TEXT("Spectating"));
     UKismetSystemLibrary::GetDefaultObj()->ExecuteConsoleCommand(UWorld::GetWorld(), L"open Apollo_Terrain", nullptr);

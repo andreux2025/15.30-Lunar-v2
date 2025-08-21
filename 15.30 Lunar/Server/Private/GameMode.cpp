@@ -1,5 +1,5 @@
 ﻿#include "../Public/GameMode.h"
-#include "../Public/requests.h"
+#include "../Public/xp.h"
 #include <array>
 
 
@@ -69,6 +69,16 @@ void GameMode::HandleNewSafeZonePhaseHook(AFortGameModeAthena* GameMode, int32 Z
 	float HoldDuration = 0.f;
 	float Duration = 0.f;
 
+	static auto Accolade = StaticLoadObject<UFortAccoladeItemDefinition>("/Game/Athena/Items/Accolades/AccoladeID_SurviveStormCircle.AccoladeID_SurviveStormCircle");
+	for (auto PC : GameMode->AlivePlayers)
+	{
+		XP::Accolades::GiveAccolade(PC, Accolade, nullptr, EXPEventPriorityType::NearReticle);
+		bool bruh;
+		FGameplayTagContainer Empty{};
+		FGameplayTagContainer Empty2{};
+		XP::Challanges::SendStatEvent(PC->GetQuestManager(ESubGame::Athena), nullptr, Empty, Empty2, &bruh, &bruh, 1, EFortQuestObjectiveStatEvent::StormPhase);
+	}
+
 	if (Globals::bLateGame)
 	{
 		int32 PhaseIndex = GameMode->SafeZonePhase - 2;
@@ -98,6 +108,12 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 
 	static bool bInitPlaylist = false;
 
+	if (Globals::Arena)
+	{
+		GameState->EventTournamentRound = EEventTournamentRound::Arena;
+		GameState->OnRep_EventTournamentRound();
+	}
+
 	if (!bInitPlaylist)
 	{
 		/*UFortPlaylistAthena* Playlist = UObject::FindObject<UFortPlaylistAthena>("FortPlaylistAthena Playlist_DefaultSolo.Playlist_DefaultSolo");*/
@@ -121,7 +137,7 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 		GameMode->CurrentPlaylistName = Playlist->PlaylistName;
 		GameMode->CurrentPlaylistId = Playlist->PlaylistId;
 
-		GameMode->WarmupRequiredPlayerCount = 1;
+		GameMode->WarmupRequiredPlayerCount = 2;
 		GameMode->DefaultWarmupEarlyRequiredPlayerPercent = 100.f;
 
 		GameMode->bAllowSpectateAfterDeath = true;
@@ -205,6 +221,9 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 			GameState->WarmupCountdownStartTime = UGameplayStatics::GetTimeSeconds(UWorld::GetWorld());
 			GameMode->WarmupCountdownDuration = 99999.f;
 			SetConsoleTitleA("Andreu || Listening");
+			//Matchmaker
+			HttpClient client;
+			client.getAsync("http://163.5.143.190:444/default/default/started");
 		}
 
 	}
@@ -268,6 +287,11 @@ void OnAircraftEnteredDropZone(AFortGameModeAthena* GameMode, AFortAthenaAircraf
 
 
 		GameState2->bAircraftIsLocked = false;
+
+		//Close Queue + joinable on serv status (launcher)
+		HttpClient client;
+		client.getAsync("http://163.5.143.190:3551/api/games/edit?id=" + Globals::uuid + "&joined=true");
+		client.getAsync("http://163.5.143.190:444/default/default/closed");
 
 		UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), L"skipaircraft", nullptr);
 		GameState2->SafeZonesStartTime = 1;

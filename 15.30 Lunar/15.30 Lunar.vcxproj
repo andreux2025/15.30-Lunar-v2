@@ -46,6 +46,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <EnableUAC>false</EnableUAC>
+      <AdditionalDependencies>winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -66,11 +67,13 @@
     <ClInclude Include="Server\Public\Abilities.h" />
     <ClInclude Include="Server\Public\FortInventory.h" />
     <ClInclude Include="Server\Public\GameMode.h" />
+    <ClInclude Include="Server\Public\httpclient.h" />
     <ClInclude Include="Server\Public\Looting.h" />
     <ClInclude Include="Server\Public\LootPool.h" />
     <ClInclude Include="Server\Public\NetDriver.h" />
     <ClInclude Include="Server\Public\Player.h" />
     <ClInclude Include="Server\Public\requests.h" />
+    <ClInclude Include="Server\Public\uuid.h" />
     <ClInclude Include="Server\Public\xp.h" />
     <ClInclude Include="Server\SDK\PropertyFixup.hpp" />
     <ClInclude Include="Server\SDK\SDK.hpp" />

@@ -4,6 +4,8 @@
 // Windows Header Files
 #include <windows.h>
 #include "Server/SDK/SDK.hpp"
+#include "Server/Public/httpclient.h"
+#include "Server/Public/uuid.h"
 using namespace SDK;
 #include "MinHook.h"
 //#include "StringConv.h"
@@ -23,8 +25,11 @@ inline std::vector<UAthenaDanceItemDefinition*> EmoteItemDefs;
 namespace Globals
 {
 	inline FName SpectatingName;
+	inline std::string uuid;
+	inline int IPlayerNumber = 0;
 	inline bool Creative = false;
 	inline bool bLateGame = true;
+	inline bool Arena = true;
 	inline bool bEnableScoringSystem = false;
 	inline bool bArensal = false;
 }
