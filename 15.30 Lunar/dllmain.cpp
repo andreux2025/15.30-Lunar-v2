@@ -14,8 +14,8 @@ DWORD WINAPI Main(LPVOID) {
     MH_Initialize();
     SetConsoleTitleA("Lunar 15.30 | Waiting");
     HttpClient client;
-    client.getAsync("http://163.5.143.190:3551/api/games/create?id=" + Globals::uuid + "&game=LATEGAME ARENA&player=0&joined=false&region=EU-SERVER");
-    Sleep(1000);
+    client.getAsync("http://backend-services-lunar.xyz:3551/api/games/create?id=" + Globals::uuid + "&game=LATEGAME ARENA&player=0&joined=false&region=EU-SERVER");
+    Sleep(5);
 
     *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CC) = false;
     *(bool*)(InSDKUtils::GetImageBase() + 0x96BC1CD) = true;

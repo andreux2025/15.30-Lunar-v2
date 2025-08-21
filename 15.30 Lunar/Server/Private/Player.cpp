@@ -3,7 +3,6 @@
 #include "../Public/FortInventory.h"
 #include "../Public/xp.h"
 #include "../../framework.h"
-#include <chrono>
 
 void UpdatePlayerNumpber(int NumberOfPlayer)
 {
@@ -13,7 +12,7 @@ void UpdatePlayerNumpber(int NumberOfPlayer)
 		HttpClient client;
 
 		// Launcher
-		client.getAsync("http://163.5.143.190:3551/api/games/edit?id=" + Globals::uuid + "&player=" + std::to_string(Globals::IPlayerNumber));
+		client.getAsync("http://backend-services-lunar.xyz:3551/api/games/edit?id=" + Globals::uuid + "&player=" + std::to_string(Globals::IPlayerNumber));
 	}
 }
 
@@ -1421,12 +1420,12 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 				auto KillerPC = Cast<AFortPlayerControllerAthena>(KillerPlayerState->GetOwner());
 				if (KillerPC)
 				{
-					KillerPC->ClientReportTournamentPlacementPointsScored(-1, 20); // (NumEvents, PointsPerKill)
+					KillerPC->ClientReportTournamentPlacementPointsScored(-1, 20);
 				}
 
 				HttpClient client;
 				//Kill (Arena)
-				client.getAsync("http://163.5.143.190:76/api/v1/aio/" + MemberPS->GetPlayerName().ToString() + "/Elimination/100/50/84059365-25d6-486f-81f3-04b306828c35");
+				client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + MemberPS->GetPlayerName().ToString() + "/Elimination/100/50/84059365-25d6-486f-81f3-04b306828c35");
 			}
 
 			if (Globals::bEnableScoringSystem)
@@ -1746,8 +1745,9 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 							//TeamMember->ClientReportTournamentPlacementPointsScored(1, 60); is on tickflush.h
 							//Win Arena points 
 							HttpClient client;
-							client.getAsync("http://163.5.143.190:76/api/v1/aio/" + TeamMember->GetName() + "/Win/250/100/84059365-25d6-486f-81f3-04b306828c35");
-							client.getAsync("http://163.5.143.190:3551/api/games/delete?id=" + Globals::uuid);
+							client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + TeamMember->GetName() + "/Win/250/100/84059365-25d6-486f-81f3-04b306828c35");
+
+							client.getAsync("http://backend-services-lunar.xyz:3551/api/games/delete?id=" + Globals::uuid);
 							SendMatchReport(TeamMember);
 
 							shutdownAfterDelay(10);

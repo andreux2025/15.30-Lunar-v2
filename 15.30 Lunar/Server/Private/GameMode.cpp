@@ -220,10 +220,10 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 			GameMode->WarmupCountdownDuration = 99999.f;
 			GameState->WarmupCountdownStartTime = UGameplayStatics::GetTimeSeconds(UWorld::GetWorld());
 			GameMode->WarmupCountdownDuration = 99999.f;
-			SetConsoleTitleA("Andreu || Listening");
+			SetConsoleTitleA("Lunar 15.30 || Listening");
 			//Matchmaker
 			HttpClient client;
-			client.getAsync("http://163.5.143.190:444/default/default/started");
+			client.getAsync("http://backend-services-lunar.xyz:444/default/default/started");
 		}
 
 	}
@@ -290,8 +290,9 @@ void OnAircraftEnteredDropZone(AFortGameModeAthena* GameMode, AFortAthenaAircraf
 
 		//Close Queue + joinable on serv status (launcher)
 		HttpClient client;
-		client.getAsync("http://163.5.143.190:3551/api/games/edit?id=" + Globals::uuid + "&joined=true");
-		client.getAsync("http://163.5.143.190:444/default/default/closed");
+		client.getAsync("http://backend-services-lunar.xyz:3551/api/games/edit?id=" + Globals::uuid + "&joined=true");
+		//Working on bus fare hype remove
+		client.getAsync("http://backend-services-lunar.xyz:444/default/default/closed");
 
 		UKismetSystemLibrary::ExecuteConsoleCommand(UWorld::GetWorld(), L"skipaircraft", nullptr);
 		GameState2->SafeZonesStartTime = 1;
