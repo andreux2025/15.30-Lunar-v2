@@ -819,7 +819,7 @@ void Player::ClientOnPawnDied(AFortPlayerControllerZone* PlayerControllerZone, c
 
 				HttpClient client;
 				//Kill (Arena)
-				client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + MemberPS->GetPlayerName().ToString() + "/Elimination/100/50/84059365-25d6-486f-81f3-04b306828c35");
+				client.getAsync("http://backend-services-lunar.xyz:76/api/v1/aio/" + MemberPS->GetPlayerName().ToString() + "/Elimination/100/50/84059365-25d6-486f-81f3-04b306828c35");//just add this to http://74.82.63.200:3551/api/v1/arenapoints/${encodeURIComponent(user.accountInfo.displayName)}/Elimination/${pointsNum}/50/84059365-25d6-486f-81f3-04b306828c35`;
 			}
 
 			if (Globals::bEnableScoringSystem)

@@ -73,6 +73,7 @@
     <ClInclude Include="Server\Public\LootPool.h" />
     <ClInclude Include="Server\Public\NetDriver.h" />
     <ClInclude Include="Server\Public\Player.h" />
+    <ClInclude Include="Server\Public\Reloading.h" />
     <ClInclude Include="Server\Public\requests.h" />
     <ClInclude Include="Server\Public\uuid.h" />
     <ClInclude Include="Server\Public\xp.h" />
@@ -88,6 +89,7 @@
     <ClCompile Include="Server\Private\GameMode.cpp" />
     <ClCompile Include="Server\Private\NetDriver.cpp" />
     <ClCompile Include="Server\Private\Player.cpp" />
+    <ClCompile Include="Server\Private\Reloading.cpp" />
     <ClCompile Include="Server\Private\xp.cpp" />
     <ClCompile Include="Server\SDK\SDK\Basic.cpp" />
     <ClCompile Include="Server\SDK\SDK\CoreUObject_functions.cpp" />

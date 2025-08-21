@@ -6,6 +6,7 @@
 #include "Server/Public/Abilities.h"
 #include "Server/Public/Looting.h"
 #include "Server/Public/xp.h"
+#include "Server/Public/Reloading.h"
 DWORD WINAPI Main(LPVOID) {
     AllocConsole();
     FILE* File = nullptr;
@@ -26,6 +27,7 @@ DWORD WINAPI Main(LPVOID) {
     Player::PlayerHooks();
     Abilities::Hooking();
     LootingHooks();
+    Weapon::WeaponHook();
     //XP_Challanges::InitXPHooks();
 
    Globals::SpectatingName = UKismetStringLibrary::Conv_StringToName(TEXT("Spectating"));

@@ -9,7 +9,7 @@ std::vector<std::string> Assault_rifle = {
     "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_SR_Ore_T03.WID_Assault_AutoHigh_Athena_SR_Ore_T03", // scar legendary
     "/Game/Athena/Items/Weapons/WID_Assault_AutoHigh_Athena_VR_Ore_T03.WID_Assault_AutoHigh_Athena_VR_Ore_T03",// scar epic
     "/Game/Athena/Items/Weapons/WID_Assault_SemiAuto_Athena_UR_Ore_T03.WID_Assault_SemiAuto_Athena_UR_Ore_T03",
-    "/Game/Athena/Items/Weapons/Boss/WID_Boss_Midas.WID_Boss_Midas"
+    "/Game/Athena/Items/Weapons/Boss/WID_Boss_Midas.WID_Boss_Midas",// Jules gun
 };
 
 std::vector<std::string> Shotgun = {
@@ -18,7 +18,14 @@ std::vector<std::string> Shotgun = {
     "/Game/Athena/Items/Weapons/WID_Shotgun_Swing_Athena_VR.WID_Shotgun_Swing_Athena_VR", // Lever Action Shotgun Epic
     "/Game/Athena/Items/Weapons/WID_Shotgun_Swing_Athena_SR.WID_Shotgun_Swing_Athena_SR", // Lever Action Shotgun Legendary
     "/Game/Athena/Items/Weapons/WID_Shotgun_Charge_Athena_SR_Ore_T03.WID_Shotgun_Charge_Athena_SR_Ore_T03", // Charge Shotgun Epic
-    "/Game/Athena/Items/Weapons/WID_Shotgun_Charge_Athena_VR_Ore_T03.WID_Shotgun_Charge_Athena_VR_Ore_T03"  // Charge Shotgun Legendary
+    "/Game/Athena/Items/Weapons/WID_Shotgun_Charge_Athena_VR_Ore_T03.WID_Shotgun_Charge_Athena_VR_Ore_T03",  // Charge Shotgun Legendary
+};
+
+std::vector<std::string> Snipers = {
+    "/Game/Athena/Items/Weapons/LTM/WID_Sniper_NoScope_Athena_SR_Ore_T03.WID_Sniper_NoScope_Athena_SR_Ore_T03", //Hunting rifle Legendary
+    "/Game/Athena/Items/Weapons/LTM/WID_Sniper_NoScope_Athena_VR_Ore_T03.WID_Sniper_NoScope_Athena_VR_Ore_T03",//Hunting rifle Epic
+    "/Game/Athena/Items/Weapons/WID_Sniper_Heavy_Athena_SR_Ore_T03.WID_Sniper_Heavy_Athena_SR_Ore_T03", //heavy legendary
+    "/Game/Athena/Items/Weapons/WID_Sniper_BoltAction_Scope_Athena_SR_Ore_T03.WID_Sniper_BoltAction_Scope_Athena_SR_Ore_T03",//Bolt Action Sniper Rifle
 };
 
 
@@ -67,7 +74,7 @@ inline std::string GetRandomWeapon(const std::vector<std::string>& list) {
 
 inline UFortItemDefinition* LoadWeapon(const std::vector<std::string>& Pool)// fixes issue where deff is somehow null
 {
-    for (int i = 0; i < 5; ++i)
+    for (int i = 0; i < 6; ++i)
     {
         std::string WeaponPath = GetRandomWeapon(Pool);
         UFortItemDefinition* Def = StaticLoadObject<UFortItemDefinition>(WeaponPath);
@@ -103,7 +110,7 @@ inline void __fastcall GiveLoadout(AFortPlayerController* PC)
         }
     }
 
-    /*if (UFortItemDefinition* RandomDef = LoadWeapon(Mixed))
+    if (UFortItemDefinition* RandomDef = LoadWeapon(Snipers))
     {
         FortInventory::GiveItem(PC, RandomDef, 1, GetClipSize(RandomDef));
 
@@ -113,7 +120,7 @@ inline void __fastcall GiveLoadout(AFortPlayerController* PC)
             if (AmmoDef)
                 FortInventory::GiveItem(PC, AmmoDef, 120, 0);
         }
-    }*/
+    }
 
     if (auto Consumable1Def = LoadWeapon(Consumables))
         FortInventory::GiveItemStack(PC, Consumable1Def, 3, 0);

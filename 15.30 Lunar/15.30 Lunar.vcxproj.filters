@@ -105,6 +105,9 @@
     <ClInclude Include="Server\Public\LateGame.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Server\Public\Reloading.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">
@@ -141,6 +144,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Server\Private\xp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Server\Private\Reloading.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
