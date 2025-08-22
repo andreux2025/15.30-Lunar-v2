@@ -51,9 +51,6 @@
     <ClInclude Include="Server\Public\Looting.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Server\Public\LootPool.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Server\curl\curl.h">
       <Filter>Header Files</Filter>
     </ClInclude>

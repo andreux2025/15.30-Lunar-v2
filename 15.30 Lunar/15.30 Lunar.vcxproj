@@ -71,7 +71,6 @@
     <ClInclude Include="Server\Public\httpclient.h" />
     <ClInclude Include="Server\Public\LateGame.h" />
     <ClInclude Include="Server\Public\Looting.h" />
-    <ClInclude Include="Server\Public\LootPool.h" />
     <ClInclude Include="Server\Public\NetDriver.h" />
     <ClInclude Include="Server\Public\Player.h" />
     <ClInclude Include="Server\Public\Reloading.h" />

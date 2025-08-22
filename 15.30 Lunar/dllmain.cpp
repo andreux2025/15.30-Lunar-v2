@@ -26,7 +26,7 @@ DWORD WINAPI Main(LPVOID) {
     GameMode::GameModeHooks();
     Player::PlayerHooks();
     Abilities::Hooking();
-    LootingHooks();
+    Looting::Hook();
     Weapon::WeaponHook();
     //XP_Challanges::InitXPHooks();
 

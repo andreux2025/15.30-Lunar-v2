@@ -342,6 +342,39 @@ inline AActor* SpawnActorManual(UClass* Class, FVector Loc = FVector(), FRotator
 //
 //	return Objects;
 //}
+template<typename T>
+T* GetDefaultObject()
+{
+	return (T*)T::StaticClass()->DefaultObject;
+}
+
+inline AFortPickupAthena* SpawnPickupAGS(UFortItemDefinition* ItemDef, int OverrideCount, int LoadedAmmo, FVector Loc, EFortPickupSourceTypeFlag SourceType, EFortPickupSpawnSource Source, AFortPawn* Pawn = nullptr)
+{
+	auto SpawnedPickup = Actors<AFortPickupAthena>(AFortPickupAthena::StaticClass(), Loc);
+	SpawnedPickup->bRandomRotation = true;
+
+	auto& PickupEntry = SpawnedPickup->PrimaryPickupItemEntry;
+	PickupEntry.ItemDefinition = ItemDef;
+	PickupEntry.Count = OverrideCount;
+	PickupEntry.LoadedAmmo = LoadedAmmo;
+	PickupEntry.ReplicationKey++;
+	SpawnedPickup->OnRep_PrimaryPickupItemEntry();
+	SpawnedPickup->PawnWhoDroppedPickup = Pawn;
+
+	SpawnedPickup->TossPickup(Loc, Pawn, -1, true, false, SourceType, Source);
+
+	SpawnedPickup->SetReplicateMovement(true);
+	SpawnedPickup->MovementComponent = (UProjectileMovementComponent*)GetDefaultObject<UGameplayStatics>()->SpawnObject(UProjectileMovementComponent::StaticClass(), SpawnedPickup);
+
+	if (SourceType == EFortPickupSourceTypeFlag::Container)
+	{
+		SpawnedPickup->bTossedFromContainer = true;
+		SpawnedPickup->OnRep_TossedFromContainer();
+	}
+
+	return SpawnedPickup;
+}
+
 
 template<typename T>
 static inline T* SpawnActorAGS(FVector Loc = { 0,0,0 }, FRotator Rot = { 0,0,0 }, AActor* Owner = nullptr)

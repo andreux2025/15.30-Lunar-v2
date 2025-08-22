@@ -1253,16 +1253,16 @@ void Player::ServerAttemptInteract(UFortControllerComponent_Interaction* Control
 	}
 	else if (ReceivingActor->GetName().starts_with("B_Athena_LootCarrier"))
 	{
-		SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
+		//SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
 	}
 	else if (ReceivingActor->GetName().starts_with("AthenaSupplyDrop_Llama_C_"))
 	{
 
-		SpawnllamaLoot((ABuildingContainer*)ReceivingActor);
+		//SpawnllamaLoot((ABuildingContainer*)ReceivingActor);
 	}
 	else if (ReceivingActor->GetName().starts_with("AthenaSupplyDrop"))
 	{
-		SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
+		//SpawnSupplyLoot((ABuildingContainer*)ReceivingActor);
 	}
 	else if (ReceivingActor && ReceivingActor->Class && ReceivingActor->Class->GetName().contains("Tiered_"))
 	{
