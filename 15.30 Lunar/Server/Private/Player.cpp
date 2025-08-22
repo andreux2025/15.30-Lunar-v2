@@ -1395,7 +1395,7 @@ void ServerReadyToStartMatch(AFortPlayerControllerAthena* PC)
 	static bool setupWorld = false;
 	if (!setupWorld) {
 		setupWorld = true;
-
+		Looting::SpawnFloorLoot();
 		if (Globals::enableSkunedBosses) {
 			SpawnNpcs();
 		}

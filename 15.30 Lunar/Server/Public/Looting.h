@@ -7,7 +7,6 @@
 #include <string>
 #include <cstdlib>
 #include <ctime>   
-// Credits: MGS
 
 inline namespace Looting {
     inline static FFortLootTierData* GetLootTierData(std::vector<FFortLootTierData*>& LootTierData)

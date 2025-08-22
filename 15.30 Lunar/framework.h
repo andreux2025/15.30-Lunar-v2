@@ -32,7 +32,7 @@ namespace Globals
 	inline std::string uuid;
 	inline int IPlayerNumber = 0;
 	inline bool Creative = false;
-	inline bool bLateGame = true;
+	inline bool bLateGame = false;
 	inline bool Arena = true;
 	inline bool enableSkunedBosses = true;
 	inline bool bEnableScoringSystem = false;
