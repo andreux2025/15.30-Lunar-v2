@@ -667,6 +667,19 @@ void Player::ServerPlayEmoteItemHook(AFortPlayerController* PlayerController, UF
 		PlayerController->MyFortPawn->bMovingEmoteForwardOnly = Emote->bMoveForwardOnly;
 		PlayerController->MyFortPawn->EmoteWalkSpeed = Emote->WalkForwardSpeed;
 	}
+	 else if (auto Toy = EmoteAsset->Cast<UAthenaToyItemDefinition>())
+	 {
+		 if (Toy->ToySpawnAbility.Get())
+			 Ability = Toy->ToySpawnAbility.Get();
+	 }
+	 else if (auto Emote = EmoteAsset->Cast<UAthenaDanceItemDefinition>())
+	 {
+		 auto DA = Emote->CustomDanceAbility.Get();
+		 Ability = DA ? DA : UGAB_Emote_Generic_C::StaticClass();
+		 PlayerController->MyFortPawn->bMovingEmote = Emote->bMovingEmote;
+		 PlayerController->MyFortPawn->bMovingEmoteForwardOnly = Emote->bMoveForwardOnly;
+		 PlayerController->MyFortPawn->EmoteWalkSpeed = Emote->WalkForwardSpeed;
+	 }
 
 	if (Ability)
 	{
