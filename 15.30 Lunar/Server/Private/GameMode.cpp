@@ -172,42 +172,12 @@ bool GameMode::ReadyToStartMatchHook(AFortGameModeAthena* GameMode)
 		GameState->OnRep_AdditionalPlaylistLevelsStreamed();
 		GameState->OnFinishedStreamingAdditionalPlaylistLevel();
 
-		if (GameMode->ServerBotManager == nullptr && GameState->CurrentPlaylistInfo.BasePlaylist) {
-			printf("Spawning ServerBotManager!\n");
-			GameMode->ServerBotManager = (UFortServerBotManagerAthena*)((UGameplayStatics*)UGameplayStatics::StaticClass()->DefaultObject)->SpawnObject(UFortServerBotManagerAthena::StaticClass(), GameMode);
-			GameMode->ServerBotManager->CachedGameMode = GameMode;
-			*(bool*)(__int64(GameMode->ServerBotManager) + 0x458) = true;
-			GameMode->ServerBotManager->CachedGameState = GameState;
-			GameMode->ServerBotManager->CachedAIPopulationTracker = ((UAthenaAISystem*)UWorld::GetWorld()->AISystem)->AIPopulationTracker;
-
-			if (!GameMode->SpawningPolicyManager)
-			{
-				GameMode->SpawningPolicyManager = SpawnActor<AFortAthenaSpawningPolicyManager>({}, {});
-			}
-
-			GameMode->SpawningPolicyManager->GameModeAthena = GameMode;
-			GameMode->SpawningPolicyManager->GameStateAthena = GameState;
-
-			auto Mutator = GameMode->ServerBotManager->CachedBotMutator;
-
-			if (!Mutator)
-			{
-				Mutator = (AFortAthenaMutator_Bots*)GameMode->GetMutatorByClass(GameMode, AFortAthenaMutator_Bots::StaticClass());
-			}
-
-			if (!Mutator)
-			{
-				Mutator = (AFortAthenaMutator_Bots*)GameMode->GetMutatorByClass(GameMode->GameState, AFortAthenaMutator_Bots::StaticClass());
-			}
-
-			printf("Mutator Name: %s\n", Mutator->GetName().c_str());
-
-			FTransform Transform{};
-			Transform.Scale3D = FVector{ 1,1,1 };
-			CharacterItemDefs = GetAllObjectsOfClass<UAthenaCharacterItemDefinition>();
-			BackpackItemDefs = GetAllObjectsOfClass<UAthenaBackpackItemDefinition>();
-			EmoteItemDefs = GetAllObjectsOfClass<UAthenaDanceItemDefinition>();
-		}
+		GameMode->ServerBotManager = (UFortServerBotManagerAthena*)UGameplayStatics::SpawnObject(UFortServerBotManagerAthena::StaticClass(), GameMode);
+		GameMode->ServerBotManager->CachedGameMode = GameMode;
+		GameMode->ServerBotManager->CachedGameState = GameState;
+		GameMode->ServerBotManager->CachedBotMutator = SpawnActorAGS<AFortAthenaMutator_Bots>();
+		GameMode->ServerBotManager->CachedBotMutator->CachedGameMode = GameMode;
+		GameMode->ServerBotManager->CachedBotMutator->CachedGameState = GameState;
 
 		bInitPlaylist = true;
 	}

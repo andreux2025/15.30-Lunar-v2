@@ -23,7 +23,7 @@ inline std::vector<UAthenaCharacterItemDefinition*> CharacterItemDefs;
 inline std::vector<UAthenaBackpackItemDefinition*> BackpackItemDefs;
 inline std::vector<UAthenaDanceItemDefinition*> EmoteItemDefs;
 inline TArray<APlayerController*> GivenLootPlayers;
-AFortAthenaMutator_Bots* BotMutator = nullptr;
+inline AFortAthenaMutator_Bots* BotMutator = nullptr;
 inline UFortAthenaAISpawnerDataComponentList* GlobalAISpawnerList = nullptr;
 inline bool bFirstChestSearched = false;
 namespace Globals
@@ -342,6 +342,19 @@ inline AActor* SpawnActorManual(UClass* Class, FVector Loc = FVector(), FRotator
 //
 //	return Objects;
 //}
+
+template<typename T>
+static inline T* SpawnActorAGS(FVector Loc = { 0,0,0 }, FRotator Rot = { 0,0,0 }, AActor* Owner = nullptr)
+{
+	FTransform Transform{};
+	Transform.Scale3D = { 1,1,1 };
+	Transform.Translation = Loc;
+	Transform.Rotation = RotatorToQuat(Rot);
+
+	AActor* NewActor = UGameplayStatics::BeginDeferredActorSpawnFromClass(UWorld::GetWorld(), T::StaticClass(), Transform, ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn, Owner);
+	return (T*)UGameplayStatics::FinishSpawningActor(NewActor, Transform);
+}
+
 
 template<typename T>
 inline  T* SpawnActor22(FVector Loc, FRotator Rot = {}, AActor* Owner = nullptr)
