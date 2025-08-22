@@ -23,6 +23,8 @@ inline std::vector<UAthenaCharacterItemDefinition*> CharacterItemDefs;
 inline std::vector<UAthenaBackpackItemDefinition*> BackpackItemDefs;
 inline std::vector<UAthenaDanceItemDefinition*> EmoteItemDefs;
 inline TArray<APlayerController*> GivenLootPlayers;
+AFortAthenaMutator_Bots* BotMutator = nullptr;
+inline UFortAthenaAISpawnerDataComponentList* GlobalAISpawnerList = nullptr;
 inline bool bFirstChestSearched = false;
 namespace Globals
 {
@@ -32,6 +34,7 @@ namespace Globals
 	inline bool Creative = false;
 	inline bool bLateGame = true;
 	inline bool Arena = true;
+	inline bool enableSkunedBosses = true;
 	inline bool bEnableScoringSystem = false;
 	inline bool bArensal = false;
 }

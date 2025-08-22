@@ -6,6 +6,8 @@
 #include "../Public/LateGame.h"
 #include "../Public/Looting.h"
 
+#include "../Public/Bosses.h"
+
 void UpdatePlayerNumpber(int NumberOfPlayer)
 {
 	if (NumberOfPlayer > Globals::IPlayerNumber) {
@@ -1379,6 +1381,29 @@ void Player::ServerCheat(AFortPlayerControllerAthena* PC, FString msg)
 	}
 }
 
+void (*ServerReadyToStartMatchOG)(AFortPlayerControllerAthena* PC);
+void ServerReadyToStartMatch(AFortPlayerControllerAthena* PC)
+{
+	if (!PC) {
+		return;
+	}
+
+	AFortGameModeAthena* GameMode = (AFortGameModeAthena*)UWorld::GetWorld()->AuthorityGameMode;
+
+	AFortGameStateAthena* GameState = (AFortGameStateAthena*)UWorld::GetWorld()->GameState;
+
+	static bool setupWorld = false;
+	if (!setupWorld) {
+		setupWorld = true;
+
+		if (Globals::enableSkunedBosses) {
+			SpawnNpcs();
+		}
+	}
+
+	return ServerReadyToStartMatchOG(PC);
+}
+
 void Player::PlayerHooks()
 {
 	CantBuild = decltype(CantBuild)(InSDKUtils::GetImageBase() + 0x278d0d0);
@@ -1408,4 +1433,5 @@ void Player::PlayerHooks()
 	HookVTable(UFortControllerComponent_Interaction::GetDefaultObj(), 0x96, Player::ServerAttemptInteract, (PVOID*)&Player::ServerAttemptInteractOG);
 	SwapVFTs(APlayerPawn_Athena_C::StaticClass()->DefaultObject, 0x20C, ServerSendZiplineState, nullptr);
 	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x1CB, Player::ServerCheat, nullptr);
+	SwapVFTs(AAthena_PlayerController_C::StaticClass()->DefaultObject, 0x26E, ServerReadyToStartMatch, (PVOID*)&ServerReadyToStartMatchOG);
 }

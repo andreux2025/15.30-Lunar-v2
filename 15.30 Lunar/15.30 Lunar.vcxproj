@@ -65,6 +65,7 @@
     <ClInclude Include="Server\curl\urlapi.h" />
     <ClInclude Include="Server\curl\websockets.h" />
     <ClInclude Include="Server\Public\Abilities.h" />
+    <ClInclude Include="Server\Public\Bosses.h" />
     <ClInclude Include="Server\Public\FortInventory.h" />
     <ClInclude Include="Server\Public\GameMode.h" />
     <ClInclude Include="Server\Public\httpclient.h" />
